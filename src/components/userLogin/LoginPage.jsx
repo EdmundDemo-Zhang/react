@@ -2,8 +2,11 @@ import React, {Component} from "react"
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {withRouter} from "react-router-dom";
+//背景图和标志图
+import backgroundImage from "../image/background.jpg"
+import logo from "../image/logo-dark.png"
 
-class LoginPage extends Component{
+export default class LoginPage extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -15,7 +18,9 @@ class LoginPage extends Component{
 			title_Email:'请输入你的账号',//邮箱输入框提示信息
 			title_Password:'请输入你的密码',//密码输入框提示信息
 			animate_Email: true,//邮箱输入框动画控制
-			animate_Password: true//密码输入框动画控制
+			animate_Password: true,//密码输入框动画控制
+			borderColor_Email: '',
+			borderColor_Password: '',
 		};
 		this.handle_Email_Change = this.handle_Email_Change.bind(this);
 		this.handle_password_Change = this.handle_password_Change.bind(this);
@@ -88,30 +93,40 @@ class LoginPage extends Component{
 	}
 	render() {
 		return(
-			/*<!--用户登录-->*/
-			<div className="middle-box text-center animated fadeInDown" >
-				<div>
-					<div>
-						<h1 className="logo-name">XX-C</h1>
-					</div>
-					<h3>Welcome to XX-CloudDisk</h3>
-					<p>登录到系统。</p>
-					{/*登录组件*/}
-					<form className="m-t" role="form">
-						<div className="form-group">
-							<input type="email" className={this.state.animate_Email ? "form-control" : "form-control animated shake"} style={{borderColor: this.state.email_borderColor}} data-toggle="tooltip"  data-placement="bottom" title={this.state.title_Email} placeholder="邮箱" name="email"  onChange={this.handle_Email_Change}/>
-						</div>
-						<div className="form-group">
-							<input type="password" className={this.state.animate_Password ? "form-control" : "form-control animated shake"} style={{borderColor: this.state.password_borderColor}} data-toggle="tooltip"   data-placement="bottom" title={this.state.title_Password} placeholder="密码" name="password" onChange={this.handle_password_Change}/>
-						</div>
-						<a className="btn btn-primary block full-width m-b" onClick={this.handleLogin_Click}>登录</a>
-					</form>
-					{/*忘记密码组件*/}
-					<ForgetPassword/>
-					{/*注册组件*/}
-					<Register/>
+			<body className="form-membership" style={{backgroundImage:"url(./assets/media/image/image1.jpg)"}}>
+			<div className="form-wrapper animated fadeIn">
+				<div id="logo">
+					<img src={logo} alt="image"/>
 				</div>
+				
+				<h5>Sign in</h5>
+				
+				<form>
+					<div className="form-group">
+						<input type="email" placeholder="Email" name="email" data-toggle="tooltip"  data-placement="bottom" required autoFocus
+						       title={this.state.title_Email}
+						       className={this.state.animate_Email ? "form-control" : "form-control animated shake"}
+						       style={{borderColor: this.state.borderColor_Email}}
+						       onChange={this.handle_Email_Change}
+						/>
+					</div>
+					<div className="form-group">
+						<input type="password" placeholder="Password" name="password" data-toggle="tooltip"  data-placement="bottom" required
+						       title={this.state.title_Password}
+						       className={this.state.animate_Password ? "form-control" : "form-control animated shake"}
+						       style={{borderColor: this.state.borderColor_Password}}
+						       onChange={this.handle_password_Change}
+						/>
+					</div>
+					<button className="btn btn-primary btn-block btn-rounded">Sign in</button>
+					<br/>
+					<ForgetPassword/>
+					<hr/>
+					<Register/>
+				</form>
 			</div>
+			</body>
+			
 		)
 	}
 }
@@ -119,11 +134,10 @@ class LoginPage extends Component{
 class Register extends Component{
 	render(){
 		return (
-			<form className="m-t" role="form">
-				<div className="form-group">
-					<button className="btn btn-primary full-width"><small className="btn-sm">没有账户?</small><Link to={"/register"}>注册</Link></button>
-				</div>
-			</form>
+			<div className="form-group justify-content-between">
+				<p className="text-muted">Don't have an account?</p>
+				<a className="btn btn-outline-light btn-sm btn-rounded"><Link to={'/register'}>Register now!</Link></a>
+			</div>
 		)
 	}
 }
@@ -131,13 +145,11 @@ class Register extends Component{
 class ForgetPassword extends Component{
 	render(){
 		return(
-			<form className="m-t form-inline" role="form">
-				<div className="form-group">
-					<button type="submit" className="btn btn-sm"> <Link to={"/changePassword"}>忘记密码？</Link></button>
-				</div>
-			</form>
+			<div className="form-group justify-content-between">
+				<small>
+					<a className="btn btn-outline-light btn-sm btn-rounded"> <Link to={'/changePassword'}>Reset password</Link></a>
+				</small>
+			</div>
 		)
 	}
 }
-
-export default withRouter(LoginPage);

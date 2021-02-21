@@ -35,7 +35,7 @@ export default class RouterIndex extends Component{
 						<RegisterPage/>
 					</Route>
 					{/*更改密码界面*/}
-					<Route path="/changPassword">
+					<Route path="/changePassword">
 						<ChangePasswordPage/>
 					</Route>
 					{/*文件管理界面*/}
