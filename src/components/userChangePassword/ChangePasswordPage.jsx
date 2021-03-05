@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
-export default class ChangePasswordPage extends Component{
+class ChangePasswordPage extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -104,7 +104,7 @@ export default class ChangePasswordPage extends Component{
 			})
 		}else{
 			//检查是否注册
-			axios.get("http://localhost:8080/user/emailIsNoRegistered?email=" + this.state.email)
+			axios.get("http://192.168.43.178:8080/user/emailIsNoRegistered?email=" + this.state.email)
 				.then((response) => {
 					//未注册
 					if (response.data === 0 )
@@ -119,7 +119,7 @@ export default class ChangePasswordPage extends Component{
 					else{
 						//将用户id存入状态
 						this.setState({userId: response.data,});
-						axios.get("http://localhost:8080/user/emailCheck?email=" + this.state.email)
+						axios.get("http://192.168.43.178:8080/user/emailCheck?email=" + this.state.email)
 							.then((response) => {
 								//存入系统返回验证码
 								this.setState({
@@ -185,7 +185,7 @@ export default class ChangePasswordPage extends Component{
 					}
 					//密码一致 修改用户密码 并跳转至登录界面
 					else{
-						axios.post("http://localhost:8080/user/userInfoChange?" +
+						axios.post("http://192.168.43.178:8080/user/userInfoChange?" +
 							"email=" + this.state.email +
 							"&password=" + this.state.password
 						);
@@ -243,11 +243,13 @@ export default class ChangePasswordPage extends Component{
 						       style={{borderColor: this.state.borderColor_ConfirmPassword}}
 						       onChange={this.handle_ConfirmPasswordChange} required/>
 					</div>
-					<button className="btn btn-primary btn-block" onClick={this.handle_SubmitClick}>Change Password</button>
+					<a className="btn btn-primary btn-block" onClick={this.handle_SubmitClick}>Change Password</a>
 				</form>
 			</div>
 			</body>
 		)
 	}
 	
-} 
+}
+
+export default withRouter(ChangePasswordPage);

@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
-export default class RegisterPage extends Component{
+class RegisterPage extends Component{
 	//内部状态
 	constructor(props) {
 		super(props);
@@ -127,7 +128,7 @@ export default class RegisterPage extends Component{
 			}
 			//2、邮箱格式正确 查看是否曾注册过系统
 			else{
-				axios.get("http://localhost:8080/user/emailIsNoRegistered?email=" + this.state.email)
+				axios.get("http://192.168.43.213:8080/user/emailIsNoRegistered?email=" + this.state.email)
 					.then((response) => {
 						if (response.data !== 0 )
 						{
@@ -139,7 +140,7 @@ export default class RegisterPage extends Component{
 						}
 						//用户未曾注册过 发送验证码
 						else{
-							axios.get("http://localhost:8080/user/emailCheck?email=" + this.state.email)
+							axios.get("http://192.168.43.213:8080/user/emailCheck?email=" + this.state.email)
 								.then((response)=>{
 									this.setState({
 										email_VerificationCode: response.data.toString(),
@@ -217,7 +218,7 @@ export default class RegisterPage extends Component{
 			&& this.state.input_VerificationCode !== null
 		){
 			let today = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' +new Date().getUTCDate();
-			axios.post("http://localhost:8080/user/register?"
+			axios.post("http://192.168.43.213:8080/user/register?"
 				+ "userName=" + this.state.userName
 				+ "&email=" +  this.state.email
 				+ "&password=" + this.state.password
@@ -287,7 +288,7 @@ export default class RegisterPage extends Component{
 						       style={{borderColor: this.state.borderColor_VerificationCode}}
 						       onChange={this.handle_EmailVerificationCodeChang} required/>
 					</div>
-					<button className="btn btn-primary btn-block"  onClick={this.handle_RegisterClick}>Register</button>
+					<a className="btn btn-primary btn-block"  onClick={this.handle_RegisterClick}>Register</a>
 					<hr/>
 					<p className="text-muted">Already have an account?</p>
 					<a className="btn btn-outline-light btn-sm"> <Link to='/'>Sign in!</Link></a>
@@ -298,3 +299,5 @@ export default class RegisterPage extends Component{
 		)
 	}
 }
+
+export  default withRouter(RegisterPage);

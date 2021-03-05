@@ -2,15 +2,14 @@ import React, {Component} from "react"
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {withRouter} from "react-router-dom";
-//背景图和标志图
-import backgroundImage from "../image/background.jpg"
-import logo from "../image/logo-dark.png"
+import {loginUser, onLogin} from "../Cookies/Cookies"
 
-export default class LoginPage extends Component{
+class LoginPage extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
-			user_id: null, //用户id
+			userID: null, //用户id
+			userName:null,
 			email: null,//用户邮箱
 			password: null,//用户密码
 			password_borderColor: '',//密码输入框颜色
@@ -45,9 +44,30 @@ export default class LoginPage extends Component{
 			animate_Email: true,
 			animate_Password: true
 		})
+		/*获取用户ID*/
+		axios.get("http://192.168.43.178:8080/user/getUserIDUserName?email=" + this.state.email)
+			.then((response)=>{
+				if(response.data === -1)
+				{
+					this.setState({
+						title_Email:'该账号没有注册，请注册后登录！',
+						email_borderColor: 'red',
+						animate_Email: false,
+						animate_Password: true,
+						title_Password: '请输入你的密码',
+						password_borderColor: '',
+					});
+				}
+				else{
+					this.setState({
+						userID:response.data.userID,
+						userName:response.data.userName,
+					});
+				}
+			});
 		//邮箱格式验证
 		let emailRegEpx = new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$");
-		
+
 		if (emailRegEpx.test(this.state.email) === false)
 		{
 			this.setState({
@@ -57,14 +77,17 @@ export default class LoginPage extends Component{
 			})
 		}else{
 			//根据邮箱地址获取用户是否可以登录
-			axios.get("http://localhost:8080/user/login?email=" + this.state.email + '&password=' + this.state.password)
+			axios.get("http://192.168.43.178:8080/user/login?email=" + this.state.email + '&password=' + this.state.password)
 				.then((response)=> {
 					if (response.data !== 0 && response.data !== -1)
 					{
-						this.setState({user_id: response.data});
-						this.props.getUserIDFromLogin(this.state.user_id);
-						this.props.history.push('/fileManage');
-						
+						const user = {
+							userID:this.state.userID,
+							userName:this.state.userName,
+							email:this.state.email,
+						}
+						onLogin(user);
+						this.props.history.push({pathname:'/fileManage'});
 					}
 					if (response.data === 0)
 					{
@@ -96,7 +119,7 @@ export default class LoginPage extends Component{
 			<body className="form-membership" style={{backgroundImage:"url(./assets/media/image/image1.jpg)"}}>
 			<div className="form-wrapper animated fadeIn">
 				<div id="logo">
-					<img src={logo} alt="image"/>
+					<img src="./assets/media/image/logo-dark.png" alt="image"/>
 				</div>
 				
 				<h5>Sign in</h5>
@@ -118,7 +141,7 @@ export default class LoginPage extends Component{
 						       onChange={this.handle_password_Change}
 						/>
 					</div>
-					<button className="btn btn-primary btn-block btn-rounded">Sign in</button>
+					<a className="btn btn-primary btn-block btn-rounded" onClick={this.handleLogin_Click}>Sign in</a>
 					<br/>
 					<ForgetPassword/>
 					<hr/>
@@ -153,3 +176,6 @@ class ForgetPassword extends Component{
 		)
 	}
 }
+
+
+export default withRouter(LoginPage);

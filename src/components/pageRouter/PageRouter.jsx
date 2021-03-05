@@ -5,20 +5,26 @@ import RegisterPage from "../userRegister/RegisterPage";
 import ChangePasswordPage from "../userChangePassword/ChangePasswordPage";
 import FileManagePage from "../userFileManage/FileManagePage";
 import SearchResultPage from "../userSearchResult/SearchResultPage";
-import FileUploadPage from "../userFileUpload/FileUploadPage";
 
 
 export default class RouterIndex extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
-			userID: null,
+			userName: null,
+			userID:null,
 		}
+		this.getUserNameFromLogin = this.getUserNameFromLogin.bind(this);
 		this.getUserIDFromLogin = this.getUserIDFromLogin.bind(this);
 	}
-	getUserIDFromLogin(userId){
+	getUserNameFromLogin(userName){
 		this.setState({
-			userID: userId,
+			userName: userName,
+		})
+	}
+	getUserIDFromLogin(userID){
+		this.setState({
+			userID:userID,
 		})
 	}
 	
@@ -28,7 +34,10 @@ export default class RouterIndex extends Component{
 				<Switch>
 					{/*主页 即登录界面*/}
 					<Route path="/" exact={true}>
-						<LoginPage history = {this.props.history} getUserIDFromLogin = {this.getUserIDFromLogin}/>
+						<LoginPage  history={this.props.history}/>
+					</Route>
+					<Route path={"/home"}>
+						<LoginPage history = {this.props.history}/>
 					</Route>
 					{/*注册界面*/}
 					<Route path="/register">
@@ -38,18 +47,17 @@ export default class RouterIndex extends Component{
 					<Route path="/changePassword">
 						<ChangePasswordPage/>
 					</Route>
+
+
 					{/*文件管理界面*/}
 					<Route path="/fileManage">
-						<FileManagePage userID = {this.state.userID}/>
+						<FileManagePage history = {this.props.history}/>
 					</Route>
 					{/*文件搜索结果界面*/}
 					<Route path="/searchResult">
-						<SearchResultPage/>
+						<SearchResultPage history={this.props.history}/>
 					</Route>
-					{/*文件上传界面*/}
-					<Route path="/fileUpload">
-						<FileUploadPage/>
-					</Route>
+
 				</Switch>
 			</BrowserRouter>
 		)
