@@ -212,32 +212,32 @@ class ChangePasswordPage extends Component{
 				<form className="m-t" role="form">
 					<div className="form-group">
 						<div className="input-group">
-							<input type="email"  placeholder="邮箱地址" name="email" data-toggle="tooltip"  data-placement="bottom"
+							<input type="email"  placeholder="Email" name="email" data-toggle="tooltip"  data-placement="bottom"
 							       title={this.state.title_Email}
 							       className={this.state.animate_Email ? "form-control" : "form-control animated shake"}
 							       style={{borderColor : this.state.borderColor_Email}}
 							       onChange={this.handle_EmailChange} required/>
 							<span className="input-group-btn">
-								<a className="btn btn-light" onClick={this.handle_VerificationCodeSend}>发送验证码</a>
+								<a className="btn btn-light" onClick={this.handle_VerificationCodeSend}>Verify Email</a>
 							</span>
 						</div>
 					</div>
 					<div className="form-group">
-						<input type="text" placeholder="邮箱验证码" name="verification_text"
+						<input type="text" placeholder="Verification Code" name="verification_text"
 						       title={this.state.title_VerificationCode}
 						       className={this.state.animate_VerificationCode ? "form-control" : "form-control animated shake"}
 						       style={{borderColor : this.state.borderColor_VerificationCode}}
 						       onChange={this.handle_VerificationCodeInput} required/>
 					</div>
 					<div className="form-group">
-						<input  type="password"  placeholder="输入新密码" name="password"
+						<input  type="password"  placeholder="New Password" name="password"
 						        className={this.state.animate_Password ?"form-control" : "form-control animated shake"}
 						        title={this.state.title_Password}
 						        style={{borderColor:this.state.borderColor_Password}}
 						        onChange={this.handle_PasswordChange} required/>
 					</div>
 					<div className="form-group">
-						<input type="password"  placeholder="确认新密码" name="confirm_password"
+						<input type="password"  placeholder="New Password Again" name="confirm_password"
 						       className={this.state.animate_ConfirmPassword ? "form-control": "form-control animated shake"}
 						       title={this.state.title_ConfirmPassword}
 						       style={{borderColor: this.state.borderColor_ConfirmPassword}}

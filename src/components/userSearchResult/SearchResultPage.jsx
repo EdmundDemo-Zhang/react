@@ -59,75 +59,9 @@ export default class SearchResultPage extends Component{
 											</tr>
 											</thead>
 											<SearchResultTable userID={this.state.userID} searchInfo={this.state.inputSearch}/>
-											{/*<tbody>
-											<tr role="row" className="odd">
-												<td tabIndex="0" className="sorting_1">Tiger Nixon</td>
-												<td>System Architect</td>
-												<td>Edinburgh</td>
-												<td>61</td>
-											</tr>
-											</tbody>*/}
 										</table>
 									</div>
 								</div>
-								{/*<div className="row">
-									<div className="col-sm-12 col-md-5">
-										<div className="dataTables_info" id="example1_info" role="status"
-										     aria-live="polite">Showing 51 to 57 of 57 entries
-										</div>
-									</div>
-									<div className="col-sm-12 col-md-7">
-										<div className="dataTables_paginate paging_simple_numbers"
-										     id="example1_paginate">
-											<ul className="pagination">
-												<li className="paginate_button page-item previous"
-												    id="example1_previous"><a href="#" aria-controls="example1"
-												                              data-dt-idx="0" tabIndex="0"
-												                              className="page-link">Previous</a></li>
-												<li className="paginate_button page-item "><a href="#"
-												                                              aria-controls="example1"
-												                                              data-dt-idx="1"
-												                                              tabIndex="0"
-												                                              className="page-link">1</a>
-												</li>
-												<li className="paginate_button page-item "><a href="#"
-												                                              aria-controls="example1"
-												                                              data-dt-idx="2"
-												                                              tabIndex="0"
-												                                              className="page-link">2</a>
-												</li>
-												<li className="paginate_button page-item "><a href="#"
-												                                              aria-controls="example1"
-												                                              data-dt-idx="3"
-												                                              tabIndex="0"
-												                                              className="page-link">3</a>
-												</li>
-												<li className="paginate_button page-item "><a href="#"
-												                                              aria-controls="example1"
-												                                              data-dt-idx="4"
-												                                              tabIndex="0"
-												                                              className="page-link">4</a>
-												</li>
-												<li className="paginate_button page-item "><a href="#"
-												                                              aria-controls="example1"
-												                                              data-dt-idx="5"
-												                                              tabIndex="0"
-												                                              className="page-link">5</a>
-												</li>
-												<li className="paginate_button page-item active"><a href="#"
-												                                                    aria-controls="example1"
-												                                                    data-dt-idx="6"
-												                                                    tabIndex="0"
-												                                                    className="page-link">6</a>
-												</li>
-												<li className="paginate_button page-item next disabled"
-												    id="example1_next"><a href="#" aria-controls="example1"
-												                          data-dt-idx="7" tabIndex="0"
-												                          className="page-link">Next</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>*/}
 							</div>
 
 						</div>

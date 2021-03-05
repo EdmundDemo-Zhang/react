@@ -256,7 +256,7 @@ class RegisterPage extends Component{
 							       style={{borderColor: this.state.borderColor_Email}}
 							       onChange={this.handle_EmailChang}  required/>
 							<span className="input-group-btn">
-								<a className="btn btn-light" onClick={this.handle_VerificationCodeSend}>发送验证码</a>
+								<a className="btn btn-light" onClick={this.handle_VerificationCodeSend}>Verify Email</a>
 							</span>
 						</div>
 					</div>
