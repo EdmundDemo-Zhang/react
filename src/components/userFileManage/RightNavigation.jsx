@@ -11,9 +11,8 @@ export default class RightNavigation extends  Component{
             userName:this.props.userName,
             countPictures: 0,
             countDocuments: 0,
-            listPictures:[],
-            listDocuments:[],
-            listAllFiles:[],
+            textUpload:'UPLOAD',
+
         }
         this.handleUploadChange = this.handleUploadChange.bind(this);
         this.handleUploadClick = this.handleUploadClick.bind(this);
@@ -24,7 +23,7 @@ export default class RightNavigation extends  Component{
     * */
     handleUploadChange(e){
         e.preventDefault();
-        let file = e.target.files[0];
+        let file = e.currentTarget.files[0];
         formData.append('file', file);
         formData.append('userId',this.state.userID);
     }
@@ -32,6 +31,9 @@ export default class RightNavigation extends  Component{
     * 点击上传按钮时再上传至服务器
     * */
     handleUploadClick(){
+        this.setState({
+            textUpload:"LOADING.."
+        })
         const url = 'http://192.168.43.178:8080/file/upload';
         fetch(url, {
             method: 'POST',
@@ -39,7 +41,9 @@ export default class RightNavigation extends  Component{
         }).then(response => {
             response.json().then((data)=> {
                     if (data === 1) {
-                        alert("Upload Success");
+                        this.setState({
+                            textUpload:"UPLOAD",
+                        });
                         window.location.reload(true);
                     }
                 }
@@ -52,14 +56,12 @@ export default class RightNavigation extends  Component{
         axios.post("http://192.168.43.178:8080/file/mulTypeFile?userID=" + this.state.userID + "&" + "fileTypes=2,3")
             .then((response)=>{
                 this.setState({
-                    listPictures:response.data,
                     countPictures:response.data.length,
                 })
             });
         axios.post("http://192.168.43.178:8080/file/mulTypeFile?userID=" + this.state.userID + "&" + "fileTypes=0,1")
             .then((response)=>{
                 this.setState({
-                    listDocuments:response.data,
                     countDocuments:response.data.length,
                 })
             })
@@ -112,11 +114,17 @@ export default class RightNavigation extends  Component{
                     </div>
                     <div className="sidebar-footer">
                         <form>
-                            <input type="file" onChange={this.handleUploadChange}/>
-                            <a className="btn btn-sm btn-block btn-outline-primary" type={"submit"}
-                               onClick={this.handleUploadClick}>
-                                Upload
-                            </a>
+                            <div className={"form-group"}>
+                                <div className="input-group">
+                                    <input type="file" onChange={this.handleUploadChange}/>
+                                </div>
+                                <button type={"submit"}
+                                        className="btn btn-block btn-outline-primary"
+                                        onClick={this.handleUploadClick}>
+                                    <span className={(this.state.textUpload === 'UPLOAD') ? "fa fa-cloud-upload mr-2" : "spinner-border spinner-border-sm mr-2"}></span>
+                                    {this.state.textUpload}
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import LeftNavigation from "../userFileManage/LeftNavigation";
 import {loadSearchInfo, loadUserInfo} from "../Cookies/Cookies";
 import SearchTopHeader from './SearchTopHeader'
 import axios from "axios";
+import moment from "moment";
 
 export default class SearchResultPage extends Component{
 	constructor(props) {
@@ -23,8 +24,6 @@ export default class SearchResultPage extends Component{
 			inputSearch:searchInfo.inputSearch,
 		})
 	}
-
-
 
 	render() {
 		return (
@@ -50,7 +49,7 @@ export default class SearchResultPage extends Component{
 									<div className="col-sm-12">
 										<table className="table table-borderless table-hover">
 											<thead>
-											<tr role="row">
+											<tr role="row" style={{textAlign:"center"}}>
 												<th hidden={true}>fileId</th>
 												<th >Index</th>
 												<th>File Name</th>
@@ -122,17 +121,23 @@ class SearchResultTable extends Component{
 				this.state.listSearchResult.map((listFile,key)=>{
 					console.log(this.state.listSearchResult);
 					return(
-						<tr id={listFile.fileName} role="row" className="odd">
+						<tr id={listFile.fileName} role="row" className="odd" style={{textAlign:"center"}}>
 							<th hidden={true}>{listFile.fileId}</th>
 							<th>{key+1}</th>
 							<th>{listFile.fileName}</th>
-							<th>{listFile.createDate}</th>
+							<th>{moment(listFile.createDate).format('YYYY-MM-DD')}</th>
 							<th>
-								<button className={"btn btn-sm btn-rounded"} onClick={this.handleDeleteClick}>
+								<button className={"btn btn-sm btn-rounded"}
+										onClick={this.handleDeleteClick}
+										data-toggle={"tooltip"} data-placement={"bottom"}
+										title={"Delete " + listFile.fileName}>
 									<i className="ti-trash"></i>
 								</button>
 								|
-								<button className={"btn btn-sm btn-rounded"} onClick={this.handleDownloadClick}>
+								<button className={"btn btn-sm btn-rounded"}
+										onClick={this.handleDownloadClick}
+										data-toggle={"tooltip"} data-placement={"bottom"}
+										title={"Delete " + listFile.fileName}>
 									<i className={"fa fa-download"}></i>
 								</button>
 							</th>

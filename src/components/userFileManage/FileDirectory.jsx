@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import axios from "axios";
+import moment from 'moment';
 
 export default class FileDirectory extends Component{
     constructor(props) {
@@ -7,7 +8,10 @@ export default class FileDirectory extends Component{
         this.state = {
             userID: this.props.userID,
             //文件列表
-            listAllFiles:[],
+            listFiles:[],
+            locationAllFiles:true,
+            locationPictures:false,
+            locationDocuments:false,
         }
         this.handlePicturesClick = this.handlePicturesClick.bind(this);
         this.handleDocumentsClick = this.handleDocumentsClick.bind(this);
@@ -17,27 +21,42 @@ export default class FileDirectory extends Component{
     }
 
     handleAllFilesClick(){
+        this.setState({
+            locationAllFiles:true,
+            locationPictures:false,
+            locationDocuments:false,
+        })
         axios.post("http://192.168.43.178:8080/file/mulTypeFile?userID="+this.state.userID+"&fileTypes=0,1,2,3")
             .then((response)=>{
                 this.setState({
-                    listAllFiles:response.data,
+                    listFiles:response.data,
                 })
             })
     }
 
     handlePicturesClick(){
+        this.setState({
+            locationAllFiles:false,
+            locationPictures:true,
+            locationDocuments:false,
+        })
         axios.post("http://192.168.43.178:8080/file/mulTypeFile?userID="+this.state.userID+"&fileTypes=2,3")
             .then((response)=>{
                 this.setState({
-                    listAllFiles:response.data,
+                    listFiles:response.data,
                 })
             })
     }
     handleDocumentsClick(){
+        this.setState({
+            locationAllFiles:false,
+            locationPictures:false,
+            locationDocuments:true,
+        })
         axios.post("http://192.168.43.178:8080/file/mulTypeFile?userID="+this.state.userID+"&fileTypes=0,1")
             .then((response)=>{
                 this.setState({
-                    listAllFiles:response.data,
+                    listFiles:response.data,
                 })
             })
     }
@@ -56,7 +75,7 @@ export default class FileDirectory extends Component{
         axios.post("http://192.168.43.178:8080/file/mulTypeFile?userID="+this.state.userID+"&fileTypes=0,1,2,3")
             .then((response)=>{
                 this.setState({
-                    listAllFiles:response.data,
+                    listFiles:response.data,
                 })
             })
     }
@@ -78,15 +97,16 @@ export default class FileDirectory extends Component{
                         <div className="card border-0">
                             <h6 className="card-title">My Folders</h6>
                             <div>
-                                <button className={"btn btn-block"} onClick={this.handleAllFilesClick}>All Files</button>
+                                <button className={this.state.locationAllFiles ? "btn btn-block btn-primary" : "btn btn-block"}
+                                        onClick={this.handleAllFilesClick}>All Files</button>
                             </div>
                             <br/>
                             <div>
-                                <button className={"btn btn-block"} onClick={this.handlePicturesClick}>Pictures</button>
+                                <button className={this.state.locationPictures ? "btn btn-block btn-primary" : "btn btn-block"} onClick={this.handlePicturesClick}>Pictures</button>
                             </div>
                             <br/>
                             <div>
-                                <button className={"btn btn-block"} onClick={this.handleDocumentsClick}>Documents</button>
+                                <button className={this.state.locationDocuments ? "btn btn-block btn-primary" : "btn btn-block"} onClick={this.handleDocumentsClick}>Documents</button>
                             </div>
                         </div>
                     </div>
@@ -99,7 +119,7 @@ export default class FileDirectory extends Component{
                             <table  className="table table-borderless table-hover">
                                 {/*文件展示表头*/}
                                 <thead>
-                                <tr>
+                                <tr style={{textAlign:"center"}}>
                                     <th hidden={true}>fileId</th>
                                     <th >Index</th>
                                     <th>File Name</th>
@@ -110,19 +130,25 @@ export default class FileDirectory extends Component{
                                 {/*文件展示内容*/}
                                 <tbody>
                                 {
-                                    this.state.listAllFiles.map((listAllFile,key)=>{
+                                    this.state.listFiles.map((listFile,key)=>{
                                         return(
-                                            <tr id={listAllFile.fileName}>
-                                                <th hidden={true}>{listAllFile.fileId}</th>
+                                            <tr id={listFile.fileName} style={{textAlign:"center"}}>
+                                                <th hidden={true}>{listFile.fileId}</th>
                                                 <th>{key+1}</th>
-                                                <th>{listAllFile.fileName}</th>
-                                                <th>{listAllFile.createDate}</th>
+                                                <th>{listFile.fileName}</th>
+                                                <th>{moment(listFile.createDate).format('YYYY-MM-DD')}</th>
                                                 <th>
-                                                    <button className={"btn btn-sm btn-rounded"} onClick={this.handleDeleteClick}>
+                                                    <button className={"btn btn-sm btn-rounded"}
+                                                            onClick={this.handleDeleteClick}
+                                                            data-toggle={"tooltip"} data-placement={"bottom"}
+                                                            title={"Delete " + listFile.fileName}>
                                                         <i className="ti-trash"></i>
                                                     </button>
                                                     |
-                                                    <button className={"btn btn-sm btn-rounded"} onClick={this.handleDownloadClick}>
+                                                    <button className={"btn btn-sm btn-rounded"}
+                                                            onClick={this.handleDownloadClick}
+                                                            data-toggle={"tooltip"} data-placement={"bottom"}
+                                                            title={"Download " + listFile.fileName}>
                                                         <i className={"fa fa-download"}></i>
                                                     </button>
                                                 </th>
@@ -132,79 +158,14 @@ export default class FileDirectory extends Component{
 
                                 }
                                 </tbody>
-                                {/*<Files userID ={this.state.userID}
-                                       locationPictures={this.state.locationPictures}
-                                       locationDocuments={this.state.locationDocuments}
-                                       locationAllFiles={this.state.locationAllFiles}
-                                />*/}
                             </table>
 
                             {/*-------------------------------------------------------------------------------------*/}
-                        </div>                    </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
-        )
-    }
-}
-
-class  Files extends Component{
-    constructor(props) {
-        super(props);
-        this.state ={
-            userID:this.props.userID,
-            listAllFiles:[],
-        }
-        this.handleDeleteClick = this.handleDeleteClick.bind(this);
-        this.handleDownloadClick = this.handleDownloadClick.bind(this);
-    }
-
-    handleDeleteClick(e){
-        let tr = e.nativeEvent.target.parentNode.parentNode.parentNode;
-        axios.post("http://192.168.43.178:8080/file/delete?userId=" + this.state.userID + '&' + 'filename=' + tr.id);
-        window.location.reload(true);
-    }
-    handleDownloadClick(e){
-        let tr = e.nativeEvent.target.parentNode.parentNode.parentNode;
-        window.location.href="http://192.168.43.178:8080/file/download?filename=" + tr.id + '&userId=' + this.state.userID;
-    }
-    componentWillMount() {
-        //初始状态
-        axios.post("http://192.168.43.178:8080/file/mulTypeFile?userID="+this.state.userID+"&fileTypes=0,1,2,3")
-            .then((response)=>{
-                this.setState({
-                    listAllFiles:response.data,
-                })
-            })
-    }
-
-    render() {
-        return(
-            <tbody>
-                {
-                    this.state.listAllFiles.map((listAllFile,key)=>{
-                        return(
-                            <tr id={listAllFile.fileName}>
-                                <th hidden={true}>{listAllFile.fileId}</th>
-                                <th>{key}</th>
-                                <th>{listAllFile.fileName}</th>
-                                <th>{listAllFile.createDate}</th>
-                                <th>
-                                    <button className={"btn btn-sm btn-rounded"} onClick={this.handleDeleteClick}>
-                                        <i className="ti-trash"></i>
-                                    </button>
-                                    |
-                                    <button className={"btn btn-sm btn-rounded"} onClick={this.handleDownloadClick}>
-                                        <i className={"fa " +
-                                        "fa-download"}></i>
-                                    </button>
-                                </th>
-                            </tr>
-                        )
-                    })
-
-                }
-            </tbody>
         )
     }
 }

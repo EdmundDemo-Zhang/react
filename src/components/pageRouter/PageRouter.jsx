@@ -36,9 +36,6 @@ export default class RouterIndex extends Component{
 					<Route path="/" exact={true}>
 						<LoginPage  history={this.props.history}/>
 					</Route>
-					<Route path={"/home"}>
-						<LoginPage history = {this.props.history}/>
-					</Route>
 					{/*注册界面*/}
 					<Route path="/register">
 						<RegisterPage/>
