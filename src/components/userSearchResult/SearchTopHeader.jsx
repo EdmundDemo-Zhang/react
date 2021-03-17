@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import {Link} from "react-router-dom";
-import {deletaSearchInfo, onLogout} from "../Cookies/Cookies";
+import {deleteSearchInfo, onLogout} from "../Cookies/Cookies";
 
 export default class SearchTopHeader extends Component{
     constructor(props) {
@@ -14,7 +14,7 @@ export default class SearchTopHeader extends Component{
     /*登录按钮点击*/
     handleSignOutClick(){
         onLogout();
-        deletaSearchInfo();
+        deleteSearchInfo();
     }
 
 

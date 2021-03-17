@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import {Link} from "react-router-dom";
-import {deletaSearchInfo, onLogout, saveSearchInfo} from "../Cookies/Cookies";
+import {deleteSearchInfo, onLogout, saveSearchInfo} from "../Cookies/Cookies";
 
 
 export default class TopHeader extends Component{
@@ -18,7 +18,7 @@ export default class TopHeader extends Component{
     /*登录按钮点击*/
     handleSignOutClick(){
         onLogout();
-        deletaSearchInfo();
+        deleteSearchInfo();
     }
 
     /*搜索输入框改变 获取输入的值*/
@@ -37,7 +37,7 @@ export default class TopHeader extends Component{
         this.props.history.push('/searchResult');
     }
 
-    render() {
+    render(){
         return (
             <div className="header d-print-none">
                 <div className="header-container">

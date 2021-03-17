@@ -37,8 +37,8 @@ class LoginPage extends Component{
 	handleLogin_Click(){
 		//初始化状态 每次点击
 		this.setState({
-			password_borderColor: '',
-			email_borderColor: '',
+			borderColor_Password: '',
+			borderColor_Email: '',
 			title_Email:'请输入你的账号',
 			title_Password:'请输入你的密码',
 			animate_Email: true,
@@ -55,7 +55,7 @@ class LoginPage extends Component{
 						animate_Email: false,
 						animate_Password: true,
 						title_Password: '请输入你的密码',
-						password_borderColor: '',
+						borderColor_Password: '',
 					});
 				}
 				else{
@@ -73,7 +73,7 @@ class LoginPage extends Component{
 			this.setState({
 				title_Email: "邮箱格式错误！",
 				animate_Email: false,
-				email_borderColor: 'red'
+				borderColor_Email: 'red'
 			})
 		}else{
 			//根据邮箱地址获取用户是否可以登录
@@ -92,10 +92,10 @@ class LoginPage extends Component{
 					if (response.data === 0)
 					{
 						this.setState({
-							password_borderColor:'red',
+							borderColor_Password:'red',
 							title_Password: '密码错误',
 							title_Email:'请输入你的账号',
-							email_borderColor: '',
+							borderColor_Email: '',
 							animate_Password: false,
 							animate_Email:true
 						})
@@ -104,11 +104,11 @@ class LoginPage extends Component{
 					{
 						this.setState({
 							title_Email:'该账号没有注册，请注册后登录！',
-							email_borderColor: 'red',
+							borderColor_Email: 'red',
 							animate_Email: false,
 							animate_Password: true,
 							title_Password: '请输入你的密码',
-							password_borderColor: '',
+							borderColor_Password: '',
 						})
 					}
 				})

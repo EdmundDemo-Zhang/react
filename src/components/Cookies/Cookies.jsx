@@ -24,6 +24,6 @@ export const loadSearchInfo = ()=>{
     return cookie.load('userSearchInfo');
 }
 //删除用户搜索信息
-export const deletaSearchInfo = ()=>{
+export const deleteSearchInfo = ()=>{
     cookie.remove('userSearchInfo');
 }

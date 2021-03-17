@@ -91,7 +91,8 @@ class ChangePasswordPage extends Component{
 		this.setState({
 			animate_Email:true,
 			borderColor_Email:'',
-			title_Email:"请输入你需要更改密码的邮箱"
+			title_Email:"请输入你需要更改密码的邮箱",
+			flag_VerificationCodeSendClick:true,
 		})
 		let emailRegEpx = new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$");
 		//邮箱格式错误
@@ -100,7 +101,8 @@ class ChangePasswordPage extends Component{
 			this.setState({
 				title_Email: "邮箱格式错误！",
 				animate_Email: false,
-				borderColor_Email: 'red'
+				borderColor_Email: 'red',
+				flag_VerificationCodeSendClick:false,
 			})
 		}else{
 			//检查是否注册
@@ -113,6 +115,7 @@ class ChangePasswordPage extends Component{
 							animate_Email:false,
 							title_Email:"该账号未注册，请先注册！",
 							borderColor_Email:'red',
+							flag_VerificationCodeSendClick:false,
 						})
 					}
 					//已注册 请求验证码 并将验证码存入状态
@@ -126,6 +129,7 @@ class ChangePasswordPage extends Component{
 									email_VerificationCode: response.data.toString(),
 									flag_VerificationCodeSendClick:true,
 								});
+								alert(this.state.flag_VerificationCodeSendClick)
 							})
 					}
 				})
@@ -134,11 +138,6 @@ class ChangePasswordPage extends Component{
 	
 	//处理提交按钮点击
 	handle_SubmitClick(){
-		this.setState({
-			animate_VerificationCode:true,
-			borderColor_VerificationCode:'',
-			title_VerificationCode:'请输入你邮箱收到的验证码',
-		});
 		//密码 正则表达式
 		let passwordRegEpx = new RegExp("(?!.*\\s)(?!^[\u4e00-\u9fa5]+$)(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^.{8,16}$");
 		let passwordVeri = passwordRegEpx.test(this.state.password);
@@ -151,52 +150,47 @@ class ChangePasswordPage extends Component{
 				borderColor_Email: 'red'
 			})
 		}
-		else{
-			//验证码错误
-			if (this.state.email_VerificationCode !== this.state.input_VerificationCode){
-				this.setState({
-					animate_VerificationCode:false,
-					title_VerificationCode:"验证码错误",
-					borderColor_VerificationCode : 'red',
-				})
-			}
-			//验证码正确
-			else {
-				//验证密码格式
-				//密码格式错误 即模式匹配失败
-				if (passwordVeri === false)
-				{
-					this.setState({
-						title_Password : '密码格式错误，密码长度为8-16位，数字、字母、字符至少包含两种',
-						borderColor_Password: 'red',
-						animate_Password:false,
-					})
-				}
-				//密码格式正确 检查两次输入密码是否相同
-				else
-				{
-					//密码不一致 更改错误提示
-					if (this.state.password !== this.state.confirmPassword){
-						this.setState({
-							title_ConfirmPassword : '密码不一致',
-							borderColor_ConfirmPassword: 'red',
-							animate_ConfirmPassword:false,
-						})
-					}
-					//密码一致 修改用户密码 并跳转至登录界面
-					else{
-						axios.post("http://192.168.43.178:8080/user/userInfoChange?" +
-							"email=" + this.state.email +
-							"&password=" + this.state.password
-						);
-						
-						this.props.history.push('/');
-					}
-				}
-			}
-			
+		//验证码错误
+		if (this.state.email_VerificationCode !== this.state.input_VerificationCode){
+			this.setState({
+				animate_VerificationCode:false,
+				title_VerificationCode:"验证码错误",
+				borderColor_VerificationCode : 'red',
+			})
+		}
+		//密码格式错误 即模式匹配失败
+		if (passwordVeri === false)
+		{
+			this.setState({
+				title_Password : '密码格式错误，密码长度为8-16位，数字、字母、字符至少包含两种',
+				borderColor_Password: 'red',
+				animate_Password:false,
+			})
+		}
+		//密码不一致 更改错误提示
+		if (this.state.password !== this.state.confirmPassword){
+			this.setState({
+				title_ConfirmPassword : '密码不一致',
+				borderColor_ConfirmPassword: 'red',
+				animate_ConfirmPassword:false,
+			})
+		}//密码一致 修改用户密码 并跳转至登录界面
+		if (
+			this.state.flag_VerificationCodeSendClick === true &&
+			this.state.input_VerificationCode === this.state.email_VerificationCode &&
+			passwordVeri === true &&
+			this.state.password === this.state.confirmPassword
+		){
+			axios.post("http://192.168.43.178:8080/user/userInfoChange?" +
+				"email=" + this.state.email +
+				"&password=" + this.state.password
+			).then(response => {
+				alert("Success！");
+			});
+			this.props.history.push('/');
 		}
 	}
+
 	
 	render() {
 		return(
