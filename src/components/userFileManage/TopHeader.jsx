@@ -97,8 +97,8 @@ export default class TopHeader extends Component{
                                             <h5 className="mb-0">{this.state.userName}</h5>
                                         </div>
                                         <div className="list-group list-group-flush">
-                                            <a href="#" className="list-group-item"><Link to={"/changePassword"}>Reset Password</Link></a>
-                                            <a href="" className="list-group-item text-danger" onClick={this.handleSignOutClick}><Link to={'/'}>Sign Out!</Link></a>
+                                            <a className="list-group-item"><Link to={"/changePassword"}>Reset Password</Link></a>
+                                            <a className="list-group-item text-danger" onClick={this.handleSignOutClick}><Link to={'/'}>Sign Out!</Link></a>
                                         </div>
                                     </div>
                                 </li>
